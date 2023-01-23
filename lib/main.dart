@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tugas_1/payment_page.dart';
 
-import 'grid_page.dart';
-import 'grid_view.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -12,8 +11,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: GridPage(),
+    return const MaterialApp(
+      home: PaymentPage(),
     );
   }
 }
@@ -25,7 +24,7 @@ class LoginPage extends StatelessWidget {
     return  Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.yellow,
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -33,13 +32,13 @@ class LoginPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                margin: EdgeInsets.only(top: 30, bottom: 16),
-                padding: EdgeInsets.all(16),
+                margin: const EdgeInsets.only(top: 30, bottom: 16),
+                padding: const EdgeInsets.all(16),
                 color: Colors.lightBlue,
-                child: Text('Form Login'),
+                child: const Text('Form Login'),
               ),
               Padding(
-                padding: EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.only(bottom: 16),
                 child: TextFormField(
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -47,7 +46,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(bottom: 20),
+                padding: const EdgeInsets.only(bottom: 20),
                 child: TextFormField(
                   obscureText: true,
                   decoration: const InputDecoration(
@@ -55,7 +54,7 @@ class LoginPage extends StatelessWidget {
                       hintText: 'Silakan masukan password'),
                 ),
               ),
-              ElevatedButton(onPressed: () {}, child: Text('Login'))
+              ElevatedButton(onPressed: () {}, child: const Text('Login'))
             ]),
       ),
     );
