@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tugas_1/home/redesign_home_page.dart';
 import 'package:tugas_1/payment_page.dart';
 import 'package:tugas_1/payment_page_new.dart';
 import 'package:tugas_1/stack_page.dart';
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: StackPage(),
+      home: RedesignHomePage(),
     );
   }
 }
