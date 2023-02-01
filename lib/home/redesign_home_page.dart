@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class RedesignHomePage extends StatelessWidget {
-  const RedesignHomePage({Key? key}) : super(key: key);
+  final int activeMenuNumber;
+
+  const RedesignHomePage({Key? key, required this.activeMenuNumber})
+      : super(key: key);
 
   /*
       var number = [6, 7, 8, 9]
@@ -13,14 +16,32 @@ class RedesignHomePage extends StatelessWidget {
   * */
 
   List<HomeMenu> _menus() {
-    return [
-      HomeMenu('icon6.png', '1. Registrasi', 'done'),
-      HomeMenu('icon1.png', '2. Pembayaran Biaya', 'current'),
+    var data = [
+      HomeMenu('icon6.png', '1. Registrasi'),
+      HomeMenu('icon1.png', '2. Pembayaran Biaya'),
       HomeMenu('icon2.png', '3. Validasi Form Pendaftaran'),
       HomeMenu('icon3.png', '4. Kelengkapan Dokumen'),
       HomeMenu('icon4.png', '5. Ujian Masuk'),
       HomeMenu('icon5.png', '6. Hasil Seleksi'),
     ];
+
+    var result = data.map((e) {
+      int position = data.indexOf(e) + 1;
+      if (position < activeMenuNumber) {
+        e.status = HomeStatus.done;
+      } else if (position == activeMenuNumber) {
+        e.status = HomeStatus.current;
+      }
+      return e;
+    }).toList();
+
+    return result;
+  }
+
+  List<Widget> _menuWidget(BuildContext context) {
+    return _menus().map((e) {
+      return _menu(context, menu: e);
+    }).toList();
   }
 
   @override
@@ -132,7 +153,8 @@ class RedesignHomePage extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.1)
                     ],
                   ),
-                  ..._menus().map((e) => _menu(context, menu: e)).toList(),
+                  ..._menuWidget(context),
+                  // ..._menus().map((e) => _menu(context, menu: e)).toList(),
                   /*
                   _menu(
                     context,
@@ -194,16 +216,16 @@ class RedesignHomePage extends StatelessWidget {
     );
   }
 
-  _menu(BuildContext context, {required HomeMenu menu}) {
+  Widget _menu(BuildContext context, {required HomeMenu menu}) {
     Color borderColor = const Color(0xffF5F5F5);
     Color textColor = const Color(0xffD9D9D9);
     Widget statusUI = Container();
 
-    if (menu.status == 'done') {
+    if (menu.status == HomeStatus.done) {
       borderColor = const Color(0xff28A745);
       textColor = const Color(0xff28A745);
       statusUI = Image.asset('assets/icons/icon7.png', height: 15, width: 15);
-    } else if (menu.status == 'current') {
+    } else if (menu.status == HomeStatus.current) {
       textColor = Colors.black;
       statusUI = GestureDetector(
         onTap: () {
@@ -229,8 +251,10 @@ class RedesignHomePage extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(border: Border.all(color: borderColor)),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Image.asset('assets/icons/${menu.icon}', height: 15, width: 15),
+          Image.asset('assets/icons/${menu.icon}',
+              height: 15, width: 15, color: textColor),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: 8.0),
@@ -238,7 +262,7 @@ class RedesignHomePage extends StatelessWidget {
                 menu.title,
                 style: TextStyle(
                   color: textColor,
-                  fontWeight: menu.status == 'disable'
+                  fontWeight: menu.status == HomeStatus.disable
                       ? FontWeight.normal
                       : FontWeight.bold,
                 ),
@@ -252,10 +276,12 @@ class RedesignHomePage extends StatelessWidget {
   }
 }
 
+enum HomeStatus { done, current, disable }
+
 class HomeMenu {
   final String icon;
   final String title;
-  final String status; // done , current, disable
+  HomeStatus status; // done , current, disable
 
-  HomeMenu(this.icon, this.title, [this.status = 'disable']);
+  HomeMenu(this.icon, this.title, [this.status = HomeStatus.disable]);
 }
