@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:tugas_1/home/menu_ui.dart';
+
+import 'home_menu.dart';
+
+/*
+-> Progres maksimal = 6 = size.width ambil dari mediaqueery
+-> size width maksimal / 6 = width untuk masing2 menu
+
+1 ambil panjang maksimal
+size width di bagi 6  = masing2 menu
+kemudian di kalikan sesuai nomer menunya untuk dapat progressnya.
+ */
 
 class RedesignHomePage extends StatelessWidget {
   final int activeMenuNumber;
 
   const RedesignHomePage({Key? key, required this.activeMenuNumber})
       : super(key: key);
-
-  /*
-      var number = [6, 7, 8, 9]
-  *   var data = [1, 2, 3, 4 ,5, ...number]
-  *
-  *
-  *
-  *
-  * */
 
   List<HomeMenu> _menus() {
     var data = [
@@ -27,7 +30,7 @@ class RedesignHomePage extends StatelessWidget {
 
     var result = data.map((e) {
       int position = data.indexOf(e) + 1;
-      if (position < activeMenuNumber) {
+      if (activeMenuNumber == 0 || position < activeMenuNumber) {
         e.status = HomeStatus.done;
       } else if (position == activeMenuNumber) {
         e.status = HomeStatus.current;
@@ -39,9 +42,7 @@ class RedesignHomePage extends StatelessWidget {
   }
 
   List<Widget> _menuWidget(BuildContext context) {
-    return _menus().map((e) {
-      return _menu(context, menu: e);
-    }).toList();
+    return _menus().map((e) => MenuUI(menu: e)).toList();
   }
 
   @override
@@ -61,7 +62,6 @@ class RedesignHomePage extends StatelessWidget {
         actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.person))],
       ),
       body: SizedBox(
-        // color: Color(0xff37517E),
         width: double.infinity,
         height: MediaQuery.of(context).size.height,
         child: Stack(
@@ -98,7 +98,6 @@ class RedesignHomePage extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: Container(
                 padding: const EdgeInsets.only(top: 96, right: 16, left: 16),
-                // color: Colors.red,
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.65,
                 decoration: const BoxDecoration(
@@ -133,155 +132,75 @@ class RedesignHomePage extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  Stack(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 9),
-                        decoration: BoxDecoration(
-                            color: const Color(0xffF5F5F5),
-                            borderRadius: BorderRadius.circular(20)),
-                        height: 15,
-                        width: MediaQuery.of(context).size.width,
-                        // color: Color(0xffF5F5F5),
-                      ),
-                      Container(
-                          margin: const EdgeInsets.only(top: 9),
-                          decoration: BoxDecoration(
-                              color: const Color(0xff37517E),
-                              borderRadius: BorderRadius.circular(50)),
-                          height: 15,
-                          width: MediaQuery.of(context).size.width * 0.1)
-                    ],
-                  ),
+                  _progressUI(context),
                   ..._menuWidget(context),
-                  // ..._menus().map((e) => _menu(context, menu: e)).toList(),
-                  /*
-                  _menu(
-                    context,
-                    menu: HomeMenu('icon6.png', '1. Registrasi', 'done'),
-                  ),
-                  _menu(
-                    context,
-                    menu:
-                        HomeMenu('icon1.png', '2. Pembayaran Biaya', 'current'),
-                  ),
-                  _menu(
-                    context,
-                    menu: HomeMenu('icon2.png', '3. Validasi Form Pendaftaran'),
-                  ),
-                  _menu(
-                    context,
-                    menu: HomeMenu('icon3.png', '4. Kelengkapan Dokumen'),
-                  ),
-                  _menu(
-                    context,
-                    menu: HomeMenu('icon4.png', '5. Ujian Masuk'),
-                  ),
-                  _menu(
-                    context,
-                    menu: HomeMenu('icon5.png', '6. Hasil Seleksi'),
-                  ),*/
                 ]),
               ),
             ),
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                margin: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.14),
-                // color: Colors.red,
-                width: 150,
-                height: 150,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          blurRadius: 5,
-                          spreadRadius: 5,
-                          offset: const Offset(0, 2))
-                    ],
-                    borderRadius: const BorderRadius.all(Radius.circular(150)),
-                    color: Colors.white),
-                child: Image.asset(
-                  'assets/images/logo.jpg',
-                  width: 10,
-                  height: 10,
-                ),
-              ),
-            ),
+            _logoUI(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _menu(BuildContext context, {required HomeMenu menu}) {
-    Color borderColor = const Color(0xffF5F5F5);
-    Color textColor = const Color(0xffD9D9D9);
-    Widget statusUI = Container();
-
-    if (menu.status == HomeStatus.done) {
-      borderColor = const Color(0xff28A745);
-      textColor = const Color(0xff28A745);
-      statusUI = Image.asset('assets/icons/icon7.png', height: 15, width: 15);
-    } else if (menu.status == HomeStatus.current) {
-      textColor = Colors.black;
-      statusUI = GestureDetector(
-        onTap: () {
-          debugPrint("Tombol selesaikan di tekan");
-        },
-        child: Row(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(right: 8.0),
-              child: Text('Selesaikan',
-                  style: TextStyle(color: Color(0xff17719B))),
-            ),
-            Image.asset('assets/icons/icon8.png', height: 15, width: 15),
-          ],
+  _logoUI(BuildContext context) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Container(
+        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.14),
+        // color: Colors.red,
+        width: 150,
+        height: 150,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  blurRadius: 5,
+                  spreadRadius: 5,
+                  offset: const Offset(0, 2))
+            ],
+            borderRadius: const BorderRadius.all(Radius.circular(150)),
+            color: Colors.white),
+        child: Image.asset(
+          'assets/images/logo.jpg',
+          width: 10,
+          height: 10,
         ),
-      );
+      ),
+    );
+  }
+
+  _progressUI(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double percentage = width / 6;
+    double progressWidth = percentage;
+
+    if (activeMenuNumber == 0) {
+      progressWidth = width;
+    } else if (activeMenuNumber > 2) {
+      progressWidth = percentage * (activeMenuNumber - 1);
     }
 
-    return Container(
-      padding: const EdgeInsets.only(left: 5, right: 5),
-      margin: const EdgeInsets.only(top: 8, bottom: 8),
-      height: 30,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(border: Border.all(color: borderColor)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Image.asset('assets/icons/${menu.icon}',
-              height: 15, width: 15, color: textColor),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(
-                menu.title,
-                style: TextStyle(
-                  color: textColor,
-                  fontWeight: menu.status == HomeStatus.disable
-                      ? FontWeight.normal
-                      : FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          statusUI,
-        ],
-      ),
+    return Stack(
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 9),
+          decoration: BoxDecoration(
+              color: const Color(0xffF5F5F5),
+              borderRadius: BorderRadius.circular(20)),
+          height: 15,
+          width: width,
+        ),
+        Container(
+            margin: const EdgeInsets.only(top: 9),
+            decoration: BoxDecoration(
+                color: const Color(0xff37517E),
+                borderRadius: BorderRadius.circular(50)),
+            height: 15,
+            width: progressWidth)
+      ],
     );
   }
-}
-
-enum HomeStatus { done, current, disable }
-
-class HomeMenu {
-  final String icon;
-  final String title;
-  HomeStatus status; // done , current, disable
-
-  HomeMenu(this.icon, this.title, [this.status = HomeStatus.disable]);
 }
