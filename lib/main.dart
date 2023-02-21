@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tugas_1/home/redesign_home_page.dart';
+import 'package:tugas_1/account/my_account.dart';
+import 'package:tugas_1/home/redesign_home_page.dart' show RedesignHomePage;
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: RedesignHomePage(activeMenuNumber: 3),
+      home: MyAccountHome(),
     );
   }
 }
